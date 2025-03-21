@@ -1,0 +1,22 @@
+﻿@model EditClientViewModel
+
+<form id="editClientForm">
+    <input hidden asp-for="Id" />
+    <div class="mb-3">
+        <label for="name" class="form-label">Nome</label>
+        <input id="name" type="text" class="form-control" asp-for="Nome" />
+    </div>
+    <div class="mb-3">
+        <label for="cognome" class="form-label">Cognome</label>
+        <input id="cognome" class="form-control" asp-for="Cognome" />
+    </div>
+    <div class="mb-3">
+        <label for="telefono" class="form-label">Telefono</label>
+        <input id="telefono" type="number" class="form-control" asp-for="Telefono" />
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" type="email" class="form-control" asp-for="Email" />
+    </div>
+    <button class="btn btn-success" type="button" onclick="sendEditForm()">Save</button>
+</form>

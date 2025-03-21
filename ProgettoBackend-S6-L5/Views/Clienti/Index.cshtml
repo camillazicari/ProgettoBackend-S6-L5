@@ -1,0 +1,217 @@
+﻿@{
+	ViewData["Title"] = "Clienti";
+}
+
+<div class="container">
+	<div class="text-end">
+		<button class="btn btn-sm btn-primary"
+		@(User.IsInRole("DipendenteBase") ? "disabled" : "")
+				style="margin-left: 12px"
+				onclick="showAddModal()">
+			Aggiungi Cliente
+		</button>
+
+
+	</div>
+	<div id="tableContainer" class="container">
+	</div>
+</div>
+
+<div id="editModal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Modifica</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div id="editBody" class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="deleteModal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Conferma eliminazione</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Vuoi davvero eliminare questo cliente?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" id="deleteClientButton">Delete</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="addModal" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Aggiungi</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div id="addBody" class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@section Scripts {
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			   loadList();
+		});
+
+			async function loadList(){
+				const tableContainer = document.getElementById('tableContainer');
+
+				if(tableContainer){
+					try
+					{
+						let response = await fetch("clienti/get-all");
+
+						let data = await response.text();
+
+						tableContainer.innerHTML = data;
+
+					} catch(error)
+					{
+						console.log(error, "Errore nel recupero dei dati")
+					}
+
+					new DataTable('#clientiTable', {
+						ordering: true,
+						columnDefs: [
+							{
+								orderable: true
+							}
+						]
+					});
+
+				}
+			}
+
+			async function showAddModal(){
+			const addModal = document.getElementById('addModal');
+			if(addModal){
+				const addModalComponent = new bootstrap.Modal(addModal);
+				const response = await fetch('Client/Add')
+				const data = await response.text()
+
+				const body = document.getElementById('addBody');
+
+				if(body){
+					body.innerHTML = data;
+				}
+
+				addModalComponent.show();
+				}
+			}
+
+			async function sendAddForm(){
+			const form = document.getElementById('addClientForm');
+			if(form){
+				const formData = new FormData(form);
+
+				const response = await fetch('Client/Add', {
+					method: "POST",
+					body: formData
+				});
+
+				const data = await response.json();
+
+				if(data.success){
+					const addModal = document.getElementById('addModal');
+					if(addModal){
+						const addModalComponent = bootstrap.Modal.getInstance(addModal);
+						addModalComponent.hide();
+						loadList();
+					}
+				}
+
+			}
+			}
+
+			async function showEditModal(id){
+			const response = await fetch(`Client/Edit/${id}`)
+			const data = await response.text()
+			const modalComponent = document.getElementById('editModal');
+
+				if(modalComponent){
+					let editModal = new bootstrap.Modal(modalComponent);
+					let body = document.getElementById('editBody');
+					if(body){
+						body.innerHTML = data;
+					}
+					editModal.show();
+				}
+			}
+
+			async function sendEditForm(){
+			const form = document.getElementById('editClientForm');
+
+			if(form){
+				const formData = new FormData(form);
+
+				const response = await fetch('client/edit/save', {
+					method: "POST",
+					body: formData
+				})
+
+				const data = await response.json();
+
+				if(data.success){
+					const editModal = document.getElementById('editModal');
+
+					if(editModal){
+						const editModalInstance = bootstrap.Modal.getInstance(editModal);
+						editModalInstance.hide();
+						loadList();
+					}
+				}
+
+			}
+		}
+
+		function showDeleteModal(id){
+			const deleteModal = document.getElementById('deleteModal');
+			if(deleteModal){
+				const deleteModalComponent = new bootstrap.Modal(deleteModal);
+				deleteModalComponent.show();
+				const deleteBtn = document.getElementById('deleteClientButton');
+				if(deleteBtn){
+					deleteBtn.onclick = () => deleteClient(id)
+				}
+			}
+		}
+
+		async function deleteClient(id){
+			const response = await fetch(`client/delete/${id}`, {
+				method: "POST"
+			})
+
+			const data = await response.json();
+
+			if(data.success){
+				const deleteModal = document.getElementById('deleteModal');
+				if(deleteModal){
+					const deleteModalComponent = bootstrap.Modal.getInstance(deleteModal);
+					deleteModalComponent.hide();
+					loadList();
+				}
+			}
+		}
+	</script>
+}

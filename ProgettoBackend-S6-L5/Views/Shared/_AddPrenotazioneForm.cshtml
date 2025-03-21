@@ -1,0 +1,40 @@
+﻿@model AddPrenotazioneViewModel
+
+<form id="addPrenotazioneForm">
+	<div class="mb-3">
+		<label for="dataInizio" class="form-label">Data Inizio</label>
+		<input id="dataInizio" type="date" class="form-control" asp-for="DataInizio" />
+	</div>
+	<div class="mb-3">
+		<label for="dataFine" class="form-label">Data Fine</label>
+		<input id="dataFine" type="date" class="form-control" asp-for="DataFine" />
+	</div>
+	<div class="mb-3">
+		<label for="stato" class="form-label">Stato</label>
+		<select id="stato" class="form-control" asp-for="Stato">
+			<option>In Attesa</option>
+			<option>Confermata</option>
+			<option>Annullata</option>
+		</select>
+	</div>
+	<div class="mb-3">
+		<label for="clienteId" class="form-label">Cliente</label>
+		<select id="clienteId" class="form-control" asp-for="ClienteId">
+			<option value="">Seleziona un cliente</option>
+			@foreach (var cliente in (List<ProgettoBackend_S6_L5.Models.Cliente>)ViewBag.Clienti)
+			{
+				<option value="@cliente.ClienteId">@cliente.Nome @cliente.Cognome - @cliente.Email</option>
+			}
+		</select>
+	</div>
+	<div class="mb-3">
+		<label for="cameraId" class="form-label">Camera</label>
+		<select id="cameraId" class="form-control" asp-for="CameraId">
+			@foreach (var camera in (List<ProgettoBackend_S6_L5.Models.Camera>)ViewBag.Camere)
+			{
+				<option value="@camera.CameraId">@camera.Numero - @camera.Tipo</option>
+			}
+		</select>
+	</div>
+	<button class="btn btn-success" type="button" onclick="sendAddPrenotazioneForm()">Save</button>
+</form>

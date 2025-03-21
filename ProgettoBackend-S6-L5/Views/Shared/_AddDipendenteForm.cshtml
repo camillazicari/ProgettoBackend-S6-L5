@@ -1,0 +1,26 @@
+﻿@model AddDipendenteViewModel
+
+<form asp-action="AddDipendente" method="post">
+    <div class="mb-3">
+        <label for="userName" class="form-label">Nome Utente</label>
+        <input id="userName" type="text" class="form-control" asp-for="User.UserName" required />
+    </div>
+    
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" type="email" class="form-control" asp-for="User.Email" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="role" class="form-label">Ruolo</label>
+        <select id="role" class="form-control" asp-for="RoleId" required>
+            <option value="">Seleziona un ruolo</option>
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Aggiungi Dipendente</button>
+</form>

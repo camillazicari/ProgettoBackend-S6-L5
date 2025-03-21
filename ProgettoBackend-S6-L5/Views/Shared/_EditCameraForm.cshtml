@@ -1,0 +1,21 @@
+﻿@model EditCameraViewModel
+
+<form id="editCameraForm">
+    <input hidden asp-for="CameraId" />
+    <div class="mb-3">
+        <label for="numero" class="form-label">Numero</label>
+        <input id="numero" type="number" class="form-control" asp-for="Numero" />
+    </div>
+    <div class="mb-3">
+        <label for="tipo" class="form-label">Tipo</label>
+        <select id="tipo" class="form-control" asp-for="Tipo">
+            <option>Matrimoniale</option>
+            <option>Singola</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="prezzo" class="form-label">Prezzo</label>
+        <input id="prezzo" type="number" class="form-control" asp-for="Prezzo" />
+    </div>
+    <button class="btn btn-success" type="button" onclick="sendEditForm()">Save</button>
+</form>
