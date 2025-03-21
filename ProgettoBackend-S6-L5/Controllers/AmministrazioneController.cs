@@ -21,20 +21,15 @@ namespace ProgettoBackend_S6_L5.Controllers
         }
 
         [HttpGet("dipendenti/get-all")]
-        public async Task<IActionResult> ListaClienti()
+        public async Task<IActionResult> ListaDipendenti()
         {
             var dipendentiList = await _amministrazioneService.GetAllDipendentiAsync();
-
             return PartialView("_DipendentiList", dipendentiList);
         }
 
         [Route("Dipendente/Add")]
         public IActionResult Add()
         {
-            var viewModel = new AddDipendenteViewModel
-            {
-                Roles = await _roleManager.Roles.ToListAsync() 
-            };
             return PartialView("_AddDipendenteForm");
         }
 
@@ -45,8 +40,7 @@ namespace ProgettoBackend_S6_L5.Controllers
             {
                 return Json(new
                 {
-                    success = false,
-                    message = "Error while saving entity to database"
+                    success = false
                 });
             }
 
@@ -57,7 +51,9 @@ namespace ProgettoBackend_S6_L5.Controllers
                 return Json(new
                 {
                     success = false,
+
                 });
+
             }
 
             return Json(new

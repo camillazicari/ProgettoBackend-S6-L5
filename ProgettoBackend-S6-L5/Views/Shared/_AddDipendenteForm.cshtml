@@ -1,26 +1,35 @@
 ﻿@model AddDipendenteViewModel
 
-<form asp-action="AddDipendente" method="post">
+<form id="addDipendenteForm">
     <div class="mb-3">
-        <label for="userName" class="form-label">Nome Utente</label>
-        <input id="userName" type="text" class="form-control" asp-for="User.UserName" required />
+        <label asp-for="FirstName">Nome</label>
+        <input asp-for="FirstName" class="form-control" />
     </div>
     
     <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input id="email" type="email" class="form-control" asp-for="User.Email" required />
+        <label asp-for="LastName">Cognome</label>
+        <input asp-for="LastName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="BirthDate"></label>
+        <input asp-for="BirthDate" type="date" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" type="email" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password">Password</label>
+        <input asp-for="Password" type="password" class="form-control" />
     </div>
 
     <div class="mb-3">
-        <label for="role" class="form-label">Ruolo</label>
-        <select id="role" class="form-control" asp-for="RoleId" required>
-            <option value="">Seleziona un ruolo</option>
-            @foreach (var role in Model.Roles)
-            {
-                <option value="@role.Id">@role.Name</option>
-            }
+        <label asp-for="Role"></label>
+        <select asp-for="Role" class="form-control">
+            <option value="DipendenteBase">Dipendente Base</option>
+            <option value="DipendenteAdmin">Dipendente Admin</option>
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">Aggiungi Dipendente</button>
+    <button class="btn btn-success" type="button" onclick="sendAddForm()">Aggiungi Dipendente</button>
 </form>

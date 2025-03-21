@@ -43,42 +43,43 @@ namespace ProgettoBackend_S6_L5.Services
             }
         }
 
-        public async Task<DipendenteViewModel> GetAllDipendentiAsync()
+        public async Task<List<DipendenteViewModel>> GetAllDipendentiAsync()
         {
-            var dipendentiList = new DipendenteViewModel();
-
             try
             {
-                dipendentiList.Dipendenti = await _context.ApplicationUserRoles
-                                                        .Include(ur => ur.User)
-                                                        .Include(ur => ur.Role)
-                                                        .Where(ur => ur.Role.Name == "DipendenteBase" || ur.Role.Name == "DipendenteAdmin")
-                                                        .Select(ur => new ApplicationUserRole
-                                                        {
-                                                            User = ur.User,
-                                                            Role = ur.Role
-                                                        })
-                                                        .ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                dipendentiList.Dipendenti = null;
-            }
+                var dipendenti = await _context.ApplicationUserRoles
+                    .Include(ur => ur.User)
+                    .Include(ur => ur.Role)
+                    .Where(ur => ur.Role.Name == "DipendenteBase" || ur.Role.Name == "DipendenteAdmin")
+                    .Select(ur => new DipendenteViewModel
+                    {
+                        FirstName = ur.User.FirstName,
+                        LastName = ur.User.LastName,
+                        BirthDate = ur.User.BirthDate,
+                        Ruolo = ur.Role.Name
+                    })
+                    .Distinct()
+                    .ToListAsync();
 
-            return dipendentiList;
+                return dipendenti;
+            }
+            catch (Exception)
+            {
+                return new List<DipendenteViewModel>();
+            }
         }
 
         public async Task<bool> AddDipendenteAsync(AddDipendenteViewModel addDipendenteViewModel)
         {
             try
             {
-                var dipendente = new ApplicationUser()
+                var dipendente = new ApplicationUser
                 {
-                    UserName = addDipendenteViewModel.User.UserName,
-                    Email = addDipendenteViewModel.User.Email,
-                    FirstName = addDipendenteViewModel.User.FirstName,
-                    LastName = addDipendenteViewModel.User.LastName,
-                    BirthDate = addDipendenteViewModel.User.BirthDate
+                    UserName = addDipendenteViewModel.Email,
+                    Email = addDipendenteViewModel.Email,
+                    FirstName = addDipendenteViewModel.FirstName,
+                    LastName = addDipendenteViewModel.LastName,
+                    BirthDate = addDipendenteViewModel.BirthDate
                 };
 
                 var result = await _userManager.CreateAsync(dipendente, addDipendenteViewModel.Password);
@@ -87,20 +88,17 @@ namespace ProgettoBackend_S6_L5.Services
                     return false;
                 }
 
-                var role = addDipendenteViewModel.Role.Name; 
-                var roleExists = await _roleManager.RoleExistsAsync(role);
-                if (!roleExists)
+                if (addDipendenteViewModel.Role != "DipendenteBase" && addDipendenteViewModel.Role != "DipendenteAdmin")
                 {
                     return false;
                 }
 
-                await _userManager.AddToRoleAsync(dipendente, role);
-
+                await _userManager.AddToRoleAsync(dipendente, addDipendenteViewModel.Role);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                
+
                 return false;
             }
         }
