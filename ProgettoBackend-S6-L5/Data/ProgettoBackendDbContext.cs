@@ -30,12 +30,16 @@ namespace ProgettoBackend_S6_L5.Data
             modelBuilder.Entity<ApplicationUserRole>()
                 .HasOne(ur => ur.User)
                 .WithMany(u => u.ApplicationUserRole)
-                .HasForeignKey(ur => ur.UserId);
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             modelBuilder.Entity<ApplicationUserRole>()
                 .HasOne(ur => ur.Role)
                 .WithMany(u => u.ApplicationUserRole)
-                .HasForeignKey(ur => ur.RoleId);
+                .HasForeignKey(ur => ur.RoleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
             modelBuilder.Entity<Prenotazione>()
             .HasOne(p => p.Cliente)

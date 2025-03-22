@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProgettoBackend_S6_L5.Data;
-using ProgettoBackend_S6_L5.Models;
 using ProgettoBackend_S6_L5.ViewModels;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 
 namespace ProgettoBackend_S6_L5.Services
@@ -22,27 +20,6 @@ namespace ProgettoBackend_S6_L5.Services
             _roleManager = roleManager;
         }
 
-        private async Task<bool> SaveAsync()
-        {
-            try
-            {
-                var rowsAffected = await _context.SaveChangesAsync();
-
-                if (rowsAffected > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
         public async Task<List<DipendenteViewModel>> GetAllDipendentiAsync()
         {
             try
@@ -55,6 +32,7 @@ namespace ProgettoBackend_S6_L5.Services
                     {
                         FirstName = ur.User.FirstName,
                         LastName = ur.User.LastName,
+                        Email = ur.User.Email,
                         BirthDate = ur.User.BirthDate,
                         Ruolo = ur.Role.Name
                     })

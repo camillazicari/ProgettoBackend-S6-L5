@@ -29,7 +29,7 @@ namespace ProgettoBackend_S6_L5.Services
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -43,7 +43,7 @@ namespace ProgettoBackend_S6_L5.Services
             {
                 prenotazioniList.Prenotazioni = await _context.Prenotazioni.Include(p => p.Cliente).Include(p => p.Camera).ToListAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 prenotazioniList.Prenotazioni = null;
             }
@@ -72,7 +72,7 @@ namespace ProgettoBackend_S6_L5.Services
                 _context.Prenotazioni.Add(prenotazione);
                 return await SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -91,7 +91,7 @@ namespace ProgettoBackend_S6_L5.Services
 
                 return prenotazione;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -116,7 +116,7 @@ namespace ProgettoBackend_S6_L5.Services
 
                 return await SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -137,7 +137,7 @@ namespace ProgettoBackend_S6_L5.Services
 
                 return await SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

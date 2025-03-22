@@ -43,6 +43,7 @@ builder.Services.AddAuthentication(
         options.AccessDeniedPath = "/Account/Login";
         options.Cookie.HttpOnly = true;
         options.Cookie.Name = "Gestionale";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
     });
 
 builder.Services.AddScoped<UserManager<ApplicationUser>>();

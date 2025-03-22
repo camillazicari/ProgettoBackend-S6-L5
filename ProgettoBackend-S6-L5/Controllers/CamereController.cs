@@ -20,7 +20,7 @@ namespace ProgettoBackend_S6_L5.Controllers
         }
 
         [HttpGet("camere/get-all")]
-        public async Task<IActionResult> ListaClienti()
+        public async Task<IActionResult> ListaCamere()
         {
             var camereList = await _camereService.GetAllCamereAsync();
 
@@ -42,7 +42,6 @@ namespace ProgettoBackend_S6_L5.Controllers
                 return Json(new
                 {
                     success = false,
-                    message = "Error while saving entity to database"
                 });
             }
 

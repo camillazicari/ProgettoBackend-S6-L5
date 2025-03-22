@@ -67,7 +67,7 @@ namespace ProgettoBackend_S6_L5.Services
 
                 return await SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -86,7 +86,7 @@ namespace ProgettoBackend_S6_L5.Services
 
                 return camera;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -109,7 +109,7 @@ namespace ProgettoBackend_S6_L5.Services
 
                 return await SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -130,7 +130,7 @@ namespace ProgettoBackend_S6_L5.Services
 
                 return await SaveAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

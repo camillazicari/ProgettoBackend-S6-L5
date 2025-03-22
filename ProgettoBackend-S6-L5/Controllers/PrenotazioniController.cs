@@ -24,7 +24,7 @@ namespace ProgettoBackend_S6_L5.Controllers
         }
 
         [HttpGet("prenotazioni/get-all")]
-        public async Task<IActionResult> ListaClienti()
+        public async Task<IActionResult> ListaPrenotazioni()
         {
             var prenotazioni = await _amministrazioneService.GetAllPrenotazioniAsync();
 
@@ -45,7 +45,7 @@ namespace ProgettoBackend_S6_L5.Controllers
         }
 
         [HttpPost("Prenotazione/Add")]
-        public async Task<IActionResult> Add( AddPrenotazioneViewModel addPrenotazioneViewModel)
+        public async Task<IActionResult> Add(AddPrenotazioneViewModel addPrenotazioneViewModel)
         {
             Console.WriteLine($"ClienteId ricevuto: {addPrenotazioneViewModel.ClienteId}");
 
